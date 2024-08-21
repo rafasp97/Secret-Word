@@ -1,0 +1,13 @@
+.startsreen {
+    display: flex;
+    flex-direction: column;
+}
+
+.startscreen h1 {
+    font-size: 3.5em;
+}
+
+.startscreen p {
+    margin-bottom: 2em;
+    color: #ecfa00;
+}
