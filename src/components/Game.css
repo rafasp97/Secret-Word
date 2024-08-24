@@ -15,7 +15,6 @@
 }
 
 .wordContainer{
-    margin: 1.5em;
     display: flex;
     border: 2px solid #fff;
     border-radius: 10px;
