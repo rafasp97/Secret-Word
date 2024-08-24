@@ -71,6 +71,21 @@ export const wordsList = {
             image: "/pokemons/Tyranitar.png",
         },
 
+    ],
+    Dragon: [
+        {
+            name: "Rayquaza",
+            image2: "/pokemons/Rayquaza-out.png",
+            image: "/pokemons/Rayquaza.png",
+        },
+        {
+            name: "Dragonite",
+            image2: "/pokemons/Dragonite-out.png",
+            image: "/pokemons/Dragonite.png",
+        },
+    ],
+    Eletric: [
+
     ]
 
 };
