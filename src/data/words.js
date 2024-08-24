@@ -84,8 +84,5 @@ export const wordsList = {
             image: "/pokemons/Dragonite.png",
         },
     ],
-    Eletric: [
-
-    ]
 
 };
