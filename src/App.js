@@ -2,7 +2,7 @@
 import './App.css';
 
 //REACT
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 //DATA
 import {wordsList} from "./data/words"; //por não ter o default
@@ -13,14 +13,17 @@ import Game from './components/Game';
 import GameOver from './components/GameOver';
 
 const stages = [
-  {id: 1, name: "start"},
-  {id: 2, name: "game"},
-  {id: 3, name: "end"},
+  {id: 0, name: "start"},
+  {id: 1, name: "game"},
+  {id: 2, name: "end"},
 ]
+
 
 function App() {
   const [gameStage, setGameStage] = useState(stages[0].name)
   const [words] = useState(wordsList)
+  const [pickedImage, setPickedImage] = useState("");
+  const [pickedImageOpen, setPickedImageOpen] = useState("");
 
   //responsável pela escolha da categoria e palavra.
   const [pickedWord, setPickedWord] = useState("");
@@ -31,20 +34,32 @@ function App() {
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [wrongLetters, setWrondLetters] = useState([]);
   const [guesses, setGuesses] = useState(3);
-  const [score, setScrote] = useState(0);
+  const [score, setScrore] = useState(0);
+
+  const [noLetter, setNoLetter] = useState("");
+
+  const [openImage, setOpenImage] = useState();
 
   const pickedWordAndCategory = () => {
     const categories = Object.keys(words)
     const category = categories[Math.floor(Math.random() * Object.keys(categories).length)]
-    const word = words[category][Math.floor(Math.random() * words[category].length)]
+    const wordObj = words[category][Math.floor(Math.random() * words[category].length)]
+    const word = wordObj.name
+    const image = wordObj.image
+    const image2 = wordObj.image2
   
-    return {category, word};
+    return {category, word, image, image2};
   }
 
   //inicio do jogo
   const startGame = () => {
+    setGuesses(3)
+    setWrondLetters([])
+    setGuessedLetters([])
+    setOpenImage(0)
+
     //escolher palavra e categoria
-    const {category, word} = pickedWordAndCategory();
+    const {category, word, image, image2} = pickedWordAndCategory();
 
     //a função split cria um array de letras com a palavra escolhida;
     let wordLetters = word.split("");
@@ -54,26 +69,77 @@ function App() {
     //toLowerCase transforma a letra em minúscula, caso ela não seja.
     wordLetters = wordLetters.map((a) => a.toLowerCase());
 
-    console.log(category, word);
-    console.log(wordLetters);
+    //console.log(category, word);
+    //console.log(wordLetters);
 
     //setar os estados
     setPickedWord(word);
     setPickedCategory(category);
     setLetters(wordLetters);
+    setPickedImage(image);
+    setPickedImageOpen(image2);
 
 
     setGameStage(stages[1].name)
   }
 
-  //fim de jogo
+
   const verifyLetter = (letter) => {
-    console.log(letter);
+
+    //verifica se é uma letra
+    if(!/^[a-zA-Z]$/.test(letter)){
+      setNoLetter("letra não reconhecida...");
+      return
+    }
+    else{
+      setNoLetter("");
+    }
+
+    const normalizedLetter = letter.toLowerCase();
+
+    //checar se a letra já foi utilizada.
+    if(guessedLetters.includes(normalizedLetter) || wrongLetters.includes(normalizedLetter)){ //'includes' passa todas opções dentro do array
+      return;
+    }
+
+    //acerto da letra ou remoção da chance
+    if(letters.includes(normalizedLetter)){
+      setGuessedLetters((actualGuessLetters) => [...actualGuessLetters, normalizedLetter]) //busca o array que já existe e adiciona mais uma
+    }
+    else{
+      setWrondLetters((actualWrongLetters) => [...actualWrongLetters, normalizedLetter]) //busca o array que já existe e adiciona mais uma
+      setGuesses((actualGuesses) => actualGuesses-1);
+    }
+
   }
+
+  //condição de derrota
+  useEffect(() => {
+    if(guesses <= 0){
+      setGameStage(stages[2].name)
+    }
+  }, [guesses])
+
+  //condição de vitoria
+  useEffect(() => {
+    const uniqueLetters = [...new Set(letters)] //retira letras repetidas e retorna um array com letras unicas
+    //console.log(uniqueLetters)
+
+    if(guessedLetters.length === uniqueLetters.length){
+      setScrore((actualScore) => actualScore + 100)
+      setOpenImage(1)
+    }
+  }, [letters, guessedLetters]) //MUDANÇA AQUI!
 
   //renicia o jogo
   const restart = () => {
+    //resetar os states
+    setGuesses(3)
+    setWrondLetters([])
+    setGuessedLetters([])
     setGameStage(stages[0].name)
+    setScrore(0)
+
   }
   return (
       <div className="App">
@@ -88,10 +154,16 @@ function App() {
           wrongLetters={wrongLetters}
           guesses={guesses}
           score={score}
+          noLetter={noLetter}
+          pickedImage={pickedImage}
+          openImage={openImage}
+          pickedImageOpen={pickedImageOpen}
+          start={startGame}
         />}
-        {gameStage === 'end' && <GameOver retry={restart}/>}
+        {gameStage === 'end' && <GameOver retry={restart} score={score}/>}
       </div>
   );
+  
 }
 
 export default App;

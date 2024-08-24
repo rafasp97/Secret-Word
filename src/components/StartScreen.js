@@ -1,13 +1,12 @@
 import "./StartScreen.css";
-
 import React from 'react'
 
 const StartScreen = ({start}) => {
   return (
     <div className="startscreen">
-        <h1>Secret Word</h1>
-        <p>Clique no botão abaixo para jogar</p>
-        <button onClick={start}>Começar o jogo</button>
+        <img src="/logopokemon.png" className="logo" alt="Logo Pokémon"></img>
+        <p>Clique na Pokébola para jogar!</p>
+        <div className="buttonStart" onClick={start}></div>
     </div>
   )
 }

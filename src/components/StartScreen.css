@@ -1,13 +1,31 @@
-.startsreen {
-    display: flex;
-    flex-direction: column;
+.buttonStart {
+    background-image: url('/public/pokeball.png');
+    background-size: cover; /* ajusta o tamanho da imagem ao tamanho do botão */
+    border: none;
+    cursor: pointer;
+    transition: background-image 0.5s ease-in-out;
+  }
+
+.buttonStart:hover{
+    background-image: url('/public/pokeballopen.png');
 }
 
-.startscreen h1 {
-    font-size: 3.5em;
+@media (max-width: 480px) {
+    .buttonStart{
+        width: 100px;
+        height: 100px;
+    }
+}
+@media (min-width: 481px) and (max-width: 1440px) {
+    .buttonStart{
+        width: 150px;
+        height: 150px;
+    }
 }
 
-.startscreen p {
-    margin-bottom: 2em;
-    color: #ecfa00;
+@media (min-width: 1440px) {
+    .buttonStart{
+        width: 200px;
+        height: 200px;
+    }
 }
