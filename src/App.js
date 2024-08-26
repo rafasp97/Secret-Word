@@ -51,6 +51,7 @@ function App() {
     return {category, word, image, image2};
   }
 
+  
   //inicio do jogo
   const startGame = () => {
     setGuesses(3)
@@ -60,6 +61,7 @@ function App() {
 
     //escolher palavra e categoria
     const {category, word, image, image2} = pickedWordAndCategory();
+
 
     //a função split cria um array de letras com a palavra escolhida;
     let wordLetters = word.split("");
@@ -81,11 +83,9 @@ function App() {
 
 
     setGameStage(stages[1].name)
+
   }
-
-
   const verifyLetter = (letter) => {
-
     //verifica se é uma letra
     if(!/^[a-zA-Z]$/.test(letter)){
       setNoLetter("letra não reconhecida...");
@@ -110,7 +110,6 @@ function App() {
       setWrondLetters((actualWrongLetters) => [...actualWrongLetters, normalizedLetter]) //busca o array que já existe e adiciona mais uma
       setGuesses((actualGuesses) => actualGuesses-1);
     }
-
   }
 
   //condição de derrota
@@ -131,6 +130,9 @@ function App() {
     }
   }, [letters, guessedLetters]) //MUDANÇA AQUI!
 
+
+
+
   //renicia o jogo
   const restart = () => {
     //resetar os states
@@ -139,8 +141,9 @@ function App() {
     setGuessedLetters([])
     setGameStage(stages[0].name)
     setScrore(0)
-
   }
+
+
   return (
       <div className="App">
         {gameStage === 'start' && <StartScreen start={startGame}/>}
@@ -160,7 +163,7 @@ function App() {
           pickedImageOpen={pickedImageOpen}
           start={startGame}
         />}
-        {gameStage === 'end' && <GameOver retry={restart} score={score}/>}
+        {gameStage === 'end' && <GameOver retry={restart} score={score} pickedImageOpen={pickedImageOpen} pickedWord={pickedWord}/>}
       </div>
   );
   
